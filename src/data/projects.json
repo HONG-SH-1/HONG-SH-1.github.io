@@ -13,7 +13,7 @@
       "React"
     ],
     "showDemoPlaceholder": true,
-    "demoVideoSrc": "videos/lawpartner-demo.mp4",
+    "demoVideoSrc": "https://www.youtube.com/embed/Gf6rH7uUiC8",
     "detailTabs": [
       {
         "id": "background",

@@ -46,18 +46,33 @@ export function ProjectTabsView({ project }: ProjectTabsViewProps) {
         <div className="mb-6">
           {project.demoVideoSrc ? (
             <div
-              className="overflow-hidden rounded-xl border border-white/10 bg-black shadow-lg"
+              className={`overflow-hidden rounded-xl border border-white/10 bg-black shadow-lg ${
+                project.demoVideoSrc.startsWith("http") ? "aspect-video" : ""
+              }`}
               aria-label="시연 영상"
             >
-              <video
-                className="aspect-video w-full bg-black object-contain"
-                controls
-                playsInline
-                preload="metadata"
-                src={`${import.meta.env.BASE_URL}${project.demoVideoSrc.replace(/^\//, "")}`}
-              >
-                시연 영상을 재생할 수 없습니다. 브라우저가 MP4 재생을 지원하는지 확인하세요.
-              </video>
+              {project.demoVideoSrc.startsWith("http") ? (
+                <iframe
+                  src={project.demoVideoSrc}
+                  width="100%"
+                  height="100%"
+                  style={{ border: "none" }}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  title="데모 영상"
+                  className="h-full w-full"
+                />
+              ) : (
+                <video
+                  className="aspect-video w-full bg-black object-contain"
+                  controls
+                  playsInline
+                  preload="metadata"
+                  src={`${import.meta.env.BASE_URL}${project.demoVideoSrc.replace(/^\//, "")}`}
+                >
+                  시연 영상을 재생할 수 없습니다. 브라우저가 MP4 재생을 지원하는지 확인하세요.
+                </video>
+              )}
             </div>
           ) : (
             <div
