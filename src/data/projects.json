@@ -4,6 +4,7 @@
     "title": "Ai-Law",
     "description": "Spring Boot + React + Oracle + FastAPI 기반 법률 AI 서비스.\nJWT RTR 인증, AES-256 암호화, Bucket4j Rate Limiter,\n관리자 RBAC 12개 기능, WebSocket 실시간 알림 구현.",
     "githubUrl": "https://github.com/MadSadly/LawPartner",
+    "pdfUrl": null,
     "tags": [
       "Spring Boot",
       "Spring Security",
@@ -77,6 +78,7 @@
     "title": "MedNeduro",
     "description": "Spring MVC + Oracle + MyBatis 기반 의료 플랫폼.\nInterceptor 기반 역할별 접근 권한 검증,\nIpMaskingSerializer + 커스텀 어노테이션으로 IP 자동 마스킹,\n전체 DB 설계 담당.",
     "githubUrl": "https://github.com/HONG-SH-1/MedNeduro",
+    "pdfUrl": null,
     "tags": [
       "Spring MVC",
       "Interceptor",
