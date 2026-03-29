@@ -20,47 +20,44 @@ const groups: StackGroup[] = [
   {
     title: "Languages",
     icon: Braces,
-    // 프로그래밍 언어만
-    items: ["Java", "Python", "C", "JavaScript"],
+    items: ["Java", "Python", "JavaScript"],
   },
   {
     title: "Frontend",
     icon: Globe,
-    // JSP는 서버에서 HTML 뷰를 만드는 프레젠테이션 계층이라 UI 그룹에 둠
-    items: ["React", "Vue.js", "JSP", "Node.js", "HTML5", "CSS3"],
+    items: ["React", "Vue.js", "JSP", "HTML5", "CSS3"],
   },
   {
     title: "Backend",
     icon: Server,
     items: [
       "Spring Boot",
-      "Spring Framework",
-      "Spring Batch",
-      "Spring MVC",
-      "MyBatis",
-      "Spring Data JPA",
       "Spring Security",
+      "Spring MVC",
+      "Spring Data JPA",
+      "Spring Framework",
+      "MyBatis",
     ],
   },
   {
     title: "Database",
     icon: Database,
-    items: ["Oracle", "Oracle DB", "Oracle SQL", "MariaDB"],
+    items: ["Oracle DB", "MariaDB", "MySQL"],
   },
   {
-    title: "AI / LLM",
+    title: "AI / Data",
     icon: Sparkles,
-    items: ["LangChain", "LLM", "머신러닝", "딥러닝"],
+    items: ["Pandas", "Scikit-learn", "LangChain", "FastAPI", "Django"],
   },
   {
-    title: "DevOps / Cloud",
+    title: "DevOps / Tools",
     icon: Layers,
     items: [
       "Git",
       "GitHub",
       "GitHub Actions",
-      "Amazon EC2",
-      "Amazon S3",
+      "Apache Maven",
+      "Apache Tomcat",
     ],
   },
 ];
