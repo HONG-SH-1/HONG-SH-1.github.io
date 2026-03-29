@@ -85,7 +85,7 @@
       "JSP"
     ],
     "showDemoPlaceholder": true,
-    "demoVideoSrc": "videos/medneduro-demo.mp4",
+    "demoVideoSrc": "https://www.youtube.com/embed/HmjVkR5Yjxs",
     "detailTabs": [
       {
         "id": "background",
