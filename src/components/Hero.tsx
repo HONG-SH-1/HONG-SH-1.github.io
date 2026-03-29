@@ -1,4 +1,5 @@
 import { Sparkles } from "lucide-react";
+import { TypeAnimation } from "react-type-animation";
 
 /** 히어로: 지정 문구 그대로 표시 (메인 인트로) */
 export function Hero() {
@@ -24,6 +25,36 @@ export function Hero() {
             <Sparkles className="h-3.5 w-3.5 shrink-0" aria-hidden />
             Backend Developer
           </p>
+
+          <div
+            style={{
+              fontFamily: "var(--mono)",
+              fontSize: ".78rem",
+              color: "#4ade80",
+              marginBottom: "20px",
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+            }}
+          >
+            <span style={{ color: "#64748b" }}>root@hsh-server:~$</span>
+            <TypeAnimation
+              sequence={[
+                "systemctl start spring-security... [OK]",
+                1500,
+                "AES-256 encryption enabled... [OK]",
+                1500,
+                "JWT RTR strategy activated... [OK]",
+                1500,
+                "rate-limiter deployed... [OK]",
+                1500,
+              ]}
+              wrapper="span"
+              speed={50}
+              repeat={Infinity}
+              style={{ color: "#4ade80" }}
+            />
+          </div>
 
           <h1 className="mb-10 text-balance break-keep text-[1.375rem] font-bold leading-[1.65] tracking-normal text-zinc-100 sm:text-2xl sm:leading-[1.62] lg:text-[1.65rem] lg:leading-[1.68]">
             JWT 인증 시스템, AES-256 암호화, Rate Limiter 등

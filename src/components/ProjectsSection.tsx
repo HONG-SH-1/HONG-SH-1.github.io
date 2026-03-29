@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, type MouseEvent } from "react";
 import { FolderGit2 } from "lucide-react";
 import type { ProjectItem } from "../types/project";
 import { ProjectCard } from "./ProjectCard";
@@ -11,6 +11,18 @@ type ProjectsSectionProps = {
 /**
  * 프로젝트 영역 — 탭으로 프로젝트 전환 + 선택된 항목은 카드로 상세 표시
  */
+const projectCardLift = {
+  style: { transition: "all 0.3s ease" } as const,
+  onMouseEnter: (e: MouseEvent<HTMLDivElement>) => {
+    e.currentTarget.style.transform = "translateY(-4px)";
+    e.currentTarget.style.boxShadow = "0 0 24px rgba(74,222,128,0.15)";
+  },
+  onMouseLeave: (e: MouseEvent<HTMLDivElement>) => {
+    e.currentTarget.style.transform = "none";
+    e.currentTarget.style.boxShadow = "none";
+  },
+};
+
 export function ProjectsSection({ projects }: ProjectsSectionProps) {
   const [activeId, setActiveId] = useState(projects[0]?.id ?? "");
 
@@ -41,22 +53,23 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
           {projects.map((p) => {
             const selected = p.id === active?.id;
             return (
-              <button
-                key={p.id}
-                type="button"
-                role="tab"
-                aria-selected={selected}
-                aria-controls={`project-panel-${p.id}`}
-                id={`project-tab-${p.id}`}
-                onClick={() => setActiveId(p.id)}
-                className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
-                  selected
-                    ? "bg-accent/20 text-accent shadow-inner"
-                    : "text-zinc-400 hover:bg-white/5 hover:text-zinc-200"
-                }`}
-              >
-                {p.title}
-              </button>
+              <div key={p.id} className="inline-flex" {...projectCardLift}>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={selected}
+                  aria-controls={`project-panel-${p.id}`}
+                  id={`project-tab-${p.id}`}
+                  onClick={() => setActiveId(p.id)}
+                  className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
+                    selected
+                      ? "bg-accent/20 text-accent shadow-inner"
+                      : "text-zinc-400 hover:bg-white/5 hover:text-zinc-200"
+                  }`}
+                >
+                  {p.title}
+                </button>
+              </div>
             );
           })}
         </div>
@@ -67,6 +80,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
             role="tabpanel"
             id={`project-panel-${active.id}`}
             aria-labelledby={`project-tab-${active.id}`}
+            {...projectCardLift}
           >
             {active.detailTabs && active.detailTabs.length > 0 ? (
               <ProjectTabsView project={active} />

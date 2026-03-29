@@ -93,7 +93,8 @@ export function ProjectTabsView({ project }: ProjectTabsViewProps) {
 
       {/* 하위 탭 — 모바일에서는 가로 스크롤 */}
       <div
-        className="mb-4 flex gap-1 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="mb-4 flex gap-1 overflow-x-auto whitespace-nowrap pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         role="tablist"
         aria-label="프로젝트 상세 탭"
       >
