@@ -4,7 +4,7 @@
     "title": "Ai-Law",
     "description": "Spring Boot + React + Oracle + FastAPI 기반 법률 AI 서비스.\nJWT RTR 인증, AES-256 암호화, Bucket4j Rate Limiter,\n관리자 RBAC 12개 기능, WebSocket 실시간 알림 구현.",
     "githubUrl": "https://github.com/MadSadly/LawPartner",
-    "pdfUrl": null,
+    "pdfUrl": "/assets/lawpartner.pdf",
     "tags": [
       "Spring Boot",
       "Spring Security",
@@ -70,6 +70,24 @@
           "projects/lawpartner/schedule-part2.png"
         ],
         "content": "【일정 개요】 총 7주(2/2~3/25), 1차(1~3주)·2차(4~7주)로 구분\n\n• 매주 금요일: 전체 회의·코드 리뷰·단위 테스트\n• 초반: 사이트 기능 분석·요구사항 정의, 페이지별 DB 설계, 1차 DB·서버 연동\n• 중반~후반: 화면별 UI 구현(메인·채팅·마이·게시판·AI 챗봇·결제·검색·CS 등, 담당자별 간트 참고)\n• 막판(6~7주): 전체 DB·서버 통합·연동\n\n상단 이미지 2장에 업무번호 1~20·담당·주차별 바가 정리되어 있습니다."
+      },
+      {
+        "id": "my-demo",
+        "label": "담당 파트 시연",
+        "content": "",
+        "demoVideos": [
+          { "title": "로그인 — JWT RTR + HttpOnly 쿠키 발급", "desc": "로그인 후 개발자 도구에서 HttpOnly 쿠키 발급 및 RTR 동작 확인", "url": "" },
+          { "title": "회원가입 — AES-256 자동 암호화", "desc": "회원가입 후 DB에서 AES-256으로 암호화된 데이터 직접 조회 확인", "url": "" },
+          { "title": "관리자 대시보드", "desc": "통계 지표 및 일별 방문 수 실시간 조회", "url": "" },
+          { "title": "회원 상태 변경 — 감사 로그 자동 기록", "desc": "회원 정지 처리 후 TB_ADMIN_AUDIT에 자동 기록되는 과정 확인", "url": "" },
+          { "title": "IP 블랙리스트 — 즉시 차단", "desc": "IP 등록 후 해당 IP 요청 시 BL-403 즉시 차단 응답 확인", "url": "" },
+          { "title": "보안 위협 로그 — 실시간 조회", "desc": "비정상 접근 시도 후 보안 위협 로그 실시간 조회 확인", "url": "" },
+          { "title": "접근 로그 — 엑셀 다운로드", "desc": "사유 입력 후 접근 로그 엑셀 다운로드 동작 확인", "url": "" },
+          { "title": "변호사 서류 — 관리자 전용 다운로드", "desc": "관리자 권한으로 변호사 면허 서류 다운로드 확인", "url": "" },
+          { "title": "운영자 계정 생성 — 슈퍼관리자 전용", "desc": "슈퍼관리자로 하위 운영자 계정 생성 과정 확인", "url": "" },
+          { "title": "비밀번호 찾기 — 이메일 인증", "desc": "이메일 수신 후 인증 코드 입력 및 비밀번호 변경 흐름 확인", "url": "" },
+          { "title": "금지어 / 게시글 블라인드 처리", "desc": "금지어 등록 후 게시글 블라인드 처리 동작 확인", "url": "" }
+        ]
       }
     ]
   },

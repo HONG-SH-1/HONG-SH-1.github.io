@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ExternalLink, FileText, Github, Play } from "lucide-react";
+import { ChevronDown, ExternalLink, FileText, Github, Play } from "lucide-react";
 import type { ProjectItem } from "../types/project";
 
 type ProjectTabsViewProps = {
@@ -17,6 +17,7 @@ function publicAssetUrl(relativePath: string): string {
 export function ProjectTabsView({ project }: ProjectTabsViewProps) {
   const tabs = project.detailTabs ?? [];
   const [tabId, setTabId] = useState(tabs[0]?.id ?? "");
+  const [openDemo, setOpenDemo] = useState<number | null>(null);
 
   /* 상단 프로젝트 탭 전환 시 하위 탭을 첫 항목으로 리셋 */
   useEffect(() => {
@@ -29,28 +30,30 @@ export function ProjectTabsView({ project }: ProjectTabsViewProps) {
     <article className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 shadow-glass backdrop-blur-md sm:p-6">
       <div className="mb-6 flex flex-wrap items-start justify-between gap-3">
         <h3 className="text-xl font-semibold text-zinc-50">{project.title}</h3>
-        {project.pdfUrl && (
+        <div className="flex items-center gap-3">
+          {project.pdfUrl && (
+            <a
+              href={project.pdfUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-white/20 bg-white/5 px-3 py-1.5 text-sm font-medium text-zinc-300 transition hover:bg-white/10"
+            >
+              <FileText className="h-4 w-4" aria-hidden />
+              PDF
+              <ExternalLink className="h-3.5 w-3.5 opacity-70" aria-hidden />
+            </a>
+          )}
           <a
-            href={project.pdfUrl}
+            href={project.githubUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-lg border border-white/20 bg-white/5 px-3 py-1.5 text-sm font-medium text-zinc-300 transition hover:bg-white/10"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-accent/40 bg-accent/10 px-3 py-1.5 text-sm font-medium text-accent transition hover:bg-accent/20"
           >
-            <FileText className="h-4 w-4" aria-hidden />
-            PDF
+            <Github className="h-4 w-4" aria-hidden />
+            GitHub
             <ExternalLink className="h-3.5 w-3.5 opacity-70" aria-hidden />
           </a>
-        )}
-        <a
-          href={project.githubUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 rounded-lg border border-accent/40 bg-accent/10 px-3 py-1.5 text-sm font-medium text-accent transition hover:bg-accent/20"
-        >
-          <Github className="h-4 w-4" aria-hidden />
-          GitHub
-          <ExternalLink className="h-3.5 w-3.5 opacity-70" aria-hidden />
-        </a>
+        </div>
       </div>
 
       {/* 메인: 시연 영상 — demoVideoSrc 있으면 재생, 없으면 플레이스홀더 */}
@@ -233,6 +236,42 @@ export function ProjectTabsView({ project }: ProjectTabsViewProps) {
                 </li>
               ))}
             </ul>
+          )}
+          {activeTab.demoVideos && activeTab.demoVideos.length > 0 && (
+            <div className="space-y-3">
+              {activeTab.demoVideos.map((video, idx) => (
+                <div key={idx} className="rounded-xl border border-white/10 bg-white/[0.03] overflow-hidden">
+                  <button
+                    onClick={() => setOpenDemo(openDemo === idx ? null : idx)}
+                    className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-white/[0.04] transition"
+                  >
+                    <div className="flex flex-col gap-1">
+                      <span className="text-sm font-semibold text-zinc-100">🎬 {video.title}</span>
+                      <span className="text-xs text-zinc-500">{video.desc}</span>
+                    </div>
+                    <ChevronDown
+                      className={`h-4 w-4 shrink-0 text-accent transition-transform duration-300 ${openDemo === idx ? "rotate-180" : ""}`}
+                    />
+                  </button>
+                  {openDemo === idx && (
+                    <div className="px-5 pb-5">
+                      {video.url ? (
+                        <iframe
+                          src={video.url}
+                          className="w-full rounded-lg aspect-video"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        />
+                      ) : (
+                        <div className="w-full aspect-video rounded-lg bg-white/[0.03] border border-white/10 flex items-center justify-center">
+                          <span className="text-zinc-500 text-sm">🎬 촬영 준비 중</span>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           )}
         </div>
       )}

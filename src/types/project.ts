@@ -1,3 +1,9 @@
+export interface DemoVideo {
+  title: string;
+  desc: string;
+  url: string;
+}
+
 /** 상세 탭 한 칸 (시연 영상 + 문서형 탭용) */
 export interface ProjectDetailTab {
   id: string;
@@ -8,6 +14,7 @@ export interface ProjectDetailTab {
   images?: string[];
   /** 있으면 public 기준 HTML (예: /erd.html), 이미지 블록 대신 iframe으로 표시 */
   iframeSrc?: string;
+  demoVideos?: DemoVideo[];
 }
 
 /** JSON 설정으로 불러오는 프로젝트 항목 타입 */
