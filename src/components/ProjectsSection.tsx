@@ -90,13 +90,6 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
           </div>
         )}
 
-        <p className="mt-6 text-xs text-zinc-500">
-          새 프로젝트 추가:{" "}
-          <code className="rounded bg-zinc-800 px-1.5 py-0.5 text-zinc-400">
-            src/data/projects.json
-          </code>{" "}
-          파일에 객체를 한 줄 추가하면 탭과 카드가 자동 반영됩니다.
-        </p>
       </div>
     </section>
   );
