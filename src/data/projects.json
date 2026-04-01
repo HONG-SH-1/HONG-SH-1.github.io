@@ -88,7 +88,7 @@
           { "title": "아이디 — 이메일 인증", "desc": "아이디 찾기 - 아이디 마스킹 처리 후 출력 및 이메일 아이디 전체 발신 흐름 확인", "url": "/videos/username-recovery-email-verification.mp4" },
           { "title": "비밀번호 찾기 — 이메일 인증", "desc": "비밀번호 찾기 후 이메일 수신 후 인증 코드 입력 및 비밀번호 변경 흐름 확인", "url": "/videos/password-reset-email-verification.mp4" },
           { "title": "금지어 등록", "desc": "금지어 등록 후 게시글 / 채팅에서 금지어 입력 시 미전송 확인", "url": "/videos/banned-word-register-input-block.mp4" },
-          { "title": "게시글 블라인드 처리", "desc": "금지어 등록 후 게시글 블라인드 처리 동작 확인", "url": "/videos/post-blind-by-banned-word.mp4" }
+          { "title": "게시글 블라인드 처리", "desc": "금지어 포함 게시글 블라인드 처리 및 노출 상태 확인", "url": "/videos/post-blind-by-banned-word.mp4" }
         ]
       }
     ]
