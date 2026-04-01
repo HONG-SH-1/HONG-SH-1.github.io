@@ -256,15 +256,22 @@ export function ProjectTabsView({ project }: ProjectTabsViewProps) {
                   {openDemo === idx && (
                     <div className="px-5 pb-5">
                       {video.url ? (
-                        <iframe
-                          src={video.url}
-                          className="w-full rounded-lg aspect-video"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                        />
+                        <video
+                          className="w-full rounded-lg aspect-video bg-black"
+                          controls
+                          playsInline
+                          preload="metadata"
+                          src={
+                            video.url.startsWith("http")
+                              ? video.url
+                              : `${import.meta.env.BASE_URL}${video.url.replace(/^\//, "")}`
+                          }
+                        >
+                          영상을 재생할 수 없습니다. 브라우저가 MP4 재생을 지원하는지 확인하세요.
+                        </video>
                       ) : (
                         <div className="w-full aspect-video rounded-lg bg-white/[0.03] border border-white/10 flex items-center justify-center">
-                          <span className="text-zinc-500 text-sm">🎬 촬영 준비 중</span>
+                          <span className="text-zinc-500 text-sm">영상 처리 중 오류가 발생했습니다.</span>
                         </div>
                       )}
                     </div>

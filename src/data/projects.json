@@ -76,17 +76,18 @@
         "label": "담당 파트 시연",
         "content": "",
         "demoVideos": [
-          { "title": "로그인 — JWT RTR + HttpOnly 쿠키 발급", "desc": "로그인 후 개발자 도구에서 HttpOnly 쿠키 발급 및 RTR 동작 확인", "url": "" },
-          { "title": "회원가입 — AES-256 자동 암호화", "desc": "회원가입 후 DB에서 AES-256으로 암호화된 데이터 직접 조회 확인", "url": "" },
-          { "title": "관리자 대시보드", "desc": "통계 지표 및 일별 방문 수 실시간 조회", "url": "" },
-          { "title": "회원 상태 변경 — 감사 로그 자동 기록", "desc": "회원 정지 처리 후 TB_ADMIN_AUDIT에 자동 기록되는 과정 확인", "url": "" },
-          { "title": "IP 블랙리스트 — 즉시 차단", "desc": "IP 등록 후 해당 IP 요청 시 BL-403 즉시 차단 응답 확인", "url": "" },
-          { "title": "보안 위협 로그 — 실시간 조회", "desc": "비정상 접근 시도 후 보안 위협 로그 실시간 조회 확인", "url": "" },
-          { "title": "접근 로그 — 엑셀 다운로드", "desc": "사유 입력 후 접근 로그 엑셀 다운로드 동작 확인", "url": "" },
-          { "title": "변호사 서류 — 관리자 전용 다운로드", "desc": "관리자 권한으로 변호사 면허 서류 다운로드 확인", "url": "" },
-          { "title": "운영자 계정 생성 — 슈퍼관리자 전용", "desc": "슈퍼관리자로 하위 운영자 계정 생성 과정 확인", "url": "" },
-          { "title": "비밀번호 찾기 — 이메일 인증", "desc": "이메일 수신 후 인증 코드 입력 및 비밀번호 변경 흐름 확인", "url": "" },
-          { "title": "금지어 / 게시글 블라인드 처리", "desc": "금지어 등록 후 게시글 블라인드 처리 동작 확인", "url": "" }
+          { "title": "로그인 — JWT RTR + HttpOnly 쿠키 발급", "desc": "로그인 후 개발자 도구에서 HttpOnly 쿠키 발급 및 RTR 동작 확인", "url": "/videos/login-jwt-rtr-httponly-cookie.mp4" },
+          { "title": "회원가입 — AES-256 자동 암호화", "desc": "회원가입 후 DB에서 AES-256으로 암호화된 데이터 직접 조회 확인", "url": "/videos/signup-aes256-encryption.mp4" },
+          { "title": "관리자 대시보드", "desc": "통계 지표 및 일별 방문 수 실시간 조회", "url": "/videos/admin-dashboard.mp4" },
+          { "title": "회원 상태 변경 — 감사 로그 자동 기록", "desc": "회원 권한 변경, 정지 처리 후 TB_ADMIN_AUDIT에 자동 기록되는 과정 확인", "url": "/videos/user-status-change-audit-log.mp4" },
+          { "title": "IP 블랙리스트 — 즉시 차단", "desc": "IP 등록 후 해당 IP 요청 시 BL-403 즉시 차단 응답 확인", "url": "/videos/ip-blacklist-instant-block.mp4" },
+          { "title": "보안 위협 로그 — 실시간 조회", "desc": "비정상 접근 시도 후 보안 위협 로그 실시간 조회 확인", "url": "/videos/security-threat-log-realtime.mp4" },
+          { "title": "접근 로그 — 엑셀 다운로드", "desc": "사유 입력 후 접근 로그 엑셀 다운로드 동작 확인", "url": "/videos/access-log-excel-download.mp4" },
+          { "title": "변호사 서류 — 새창 출력", "desc": "관리자 권한으로 변호사 면허 서류 새창 출력 및 다운로드 확인", "url": "/videos/lawyer-license-new-window-download.mp4" },
+          { "title": "운영자 계정 생성 — 슈퍼관리자 전용", "desc": "슈퍼관리자로 하위 운영자 계정 생성 과정 확인", "url": "/videos/operator-account-create-superadmin.mp4" },
+          { "title": "아이디 — 이메일 인증", "desc": "아이디 찾기 - 아이디 마스킹 처리 후 출력 및 이메일 아이디 전체 발신 흐름 확인", "url": "/videos/username-recovery-email-verification.mp4" },
+          { "title": "비밀번호 찾기 — 이메일 인증", "desc": "비밀번호 찾기 후 이메일 수신 후 인증 코드 입력 및 비밀번호 변경 흐름 확인", "url": "/videos/password-reset-email-verification.mp4" },
+          { "title": "금지어 / 게시글 블라인드 처리", "desc": "금지어 등록 후 게시글 블라인드 처리 동작 확인", "url": "/videos/banned-word-post-blind-processing.mp4" }
         ]
       }
     ]
