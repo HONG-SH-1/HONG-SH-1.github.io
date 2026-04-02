@@ -1,4 +1,4 @@
-import { Fragment, useMemo, useState, type MouseEvent } from "react";
+import { useEffect, useMemo, useState, type MouseEvent } from "react";
 import { FolderGit2 } from "lucide-react";
 import type { ProjectItem } from "../types/project";
 import { ProjectCard } from "./ProjectCard";
@@ -8,9 +8,6 @@ type ProjectsSectionProps = {
   projects: ProjectItem[];
 };
 
-/**
- * 프로젝트 영역 — 탭으로 프로젝트 전환 + 선택된 항목은 카드로 상세 표시
- */
 const projectCardLift = {
   style: { transition: "all 0.3s ease" } as const,
   onMouseEnter: (e: MouseEvent<HTMLDivElement>) => {
@@ -23,16 +20,88 @@ const projectCardLift = {
   },
 };
 
+function collaborationOf(p: ProjectItem): "team" | "individual" {
+  return p.collaboration ?? "team";
+}
+
+/**
+ * 프로젝트 영역 — 상단: 팀/개인 목록(데스크톱 좌·우), 하단: 선택 프로젝트 상세 전체 너비(영상·ERD)
+ */
 export function ProjectsSection({ projects }: ProjectsSectionProps) {
   const [activeId, setActiveId] = useState(projects[0]?.id ?? "");
+
+  const teamProjects = useMemo(
+    () => projects.filter((p) => collaborationOf(p) === "team"),
+    [projects]
+  );
+  const individualProjects = useMemo(
+    () => projects.filter((p) => collaborationOf(p) === "individual"),
+    [projects]
+  );
 
   const active = useMemo(
     () => projects.find((p) => p.id === activeId) ?? projects[0],
     [projects, activeId]
   );
 
+  const hasTeam = teamProjects.length > 0;
+  const hasIndividual = individualProjects.length > 0;
+  const twoColumns = hasTeam && hasIndividual;
+
+  useEffect(() => {
+    if (projects.length === 0) return;
+    if (!projects.some((p) => p.id === activeId)) {
+      setActiveId(projects[0].id);
+    }
+  }, [projects, activeId]);
+
   if (projects.length === 0) {
     return null;
+  }
+
+  const PANEL_ID = "project-detail-panel";
+
+  function renderListBlock(
+    title: string,
+    list: ProjectItem[],
+    listId: string
+  ) {
+    if (list.length === 0) return null;
+
+    return (
+      <div className="space-y-3">
+        <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
+          {title}
+        </h3>
+        <ul className="space-y-2" id={listId}>
+          {list.map((p) => {
+            const selected = p.id === active?.id;
+            return (
+              <li key={p.id}>
+                <div
+                  className="rounded-xl border border-white/10 bg-white/[0.03] transition hover:border-white/15"
+                  {...projectCardLift}
+                >
+                  <button
+                    type="button"
+                    className={`w-full rounded-xl px-4 py-3 text-left text-sm font-medium transition ${
+                      selected
+                        ? "bg-accent/15 text-accent"
+                        : "text-zinc-300 hover:bg-white/[0.04] hover:text-zinc-100"
+                    }`}
+                    aria-pressed={selected}
+                    aria-controls={PANEL_ID}
+                    onClick={() => setActiveId(p.id)}
+                  >
+                    {p.title}
+                  </button>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    );
   }
 
   return (
@@ -44,70 +113,49 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
         </h2>
         <p className="mb-8 text-2xl font-semibold text-zinc-100">프로젝트</p>
 
-        {/* 탭 버튼: JSON 항목 수만큼 자동 생성 */}
-        <div
-          className="mb-6 flex flex-wrap gap-2 rounded-xl border border-white/10 bg-white/[0.03] p-1.5 backdrop-blur-sm"
-          role="tablist"
-          aria-label="프로젝트 선택"
-        >
-          {projects.map((p, idx) => {
-            const selected = p.id === active?.id;
-            const kind = p.collaboration ?? "team";
-            const prevKind = idx > 0 ? (projects[idx - 1].collaboration ?? "team") : undefined;
-            const showGroupLabel = idx === 0 || prevKind !== kind;
-            const groupLabel = kind === "individual" ? "개인 프로젝트" : "팀 프로젝트";
-
-            return (
-              <Fragment key={p.id}>
-                {showGroupLabel && (
-                  <div
-                    className="flex w-full basis-full items-center gap-2 py-1.5 sm:py-0"
-                    role="presentation"
-                  >
-                    <span className="shrink-0 text-[11px] font-medium uppercase tracking-wider text-zinc-500">
-                      {groupLabel}
-                    </span>
-                    <span className="h-px min-w-[1.5rem] flex-1 bg-white/10" aria-hidden />
-                  </div>
-                )}
-                <div className="inline-flex" {...projectCardLift}>
-                  <button
-                    type="button"
-                    role="tab"
-                    aria-selected={selected}
-                    aria-controls={`project-panel-${p.id}`}
-                    id={`project-tab-${p.id}`}
-                    onClick={() => setActiveId(p.id)}
-                    className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
-                      selected
-                        ? "bg-accent/20 text-accent shadow-inner"
-                        : "text-zinc-400 hover:bg-white/5 hover:text-zinc-200"
-                    }`}
-                  >
-                    {p.title}
-                  </button>
-                </div>
-              </Fragment>
-            );
-          })}
-        </div>
-
-        {/* 활성 탭에 대응하는 패널 */}
-        {active && (
+        <div className="space-y-10">
+          {/* 팀 / 개인 — 모바일 세로, sm 이상에서 두 그룹이 모일 때만 좌우 2열 */}
           <div
-            role="tabpanel"
-            id={`project-panel-${active.id}`}
-            aria-labelledby={`project-tab-${active.id}`}
-            {...projectCardLift}
+            className={
+              twoColumns
+                ? "grid gap-8 sm:grid-cols-2 sm:gap-8 lg:gap-10"
+                : "grid grid-cols-1 gap-8"
+            }
+            aria-label="프로젝트 목록"
           >
-            {active.detailTabs && active.detailTabs.length > 0 ? (
-              <ProjectTabsView project={active} />
-            ) : (
-              <ProjectCard project={active} />
+            {hasTeam && (
+              <div className="min-w-0">
+                {renderListBlock("팀 프로젝트", teamProjects, "project-list-team")}
+              </div>
+            )}
+            {hasIndividual && (
+              <div className="min-w-0">
+                {renderListBlock(
+                  "개인 프로젝트",
+                  individualProjects,
+                  "project-list-individual"
+                )}
+              </div>
             )}
           </div>
-        )}
 
+          {/* 상세(영상·ERD·탭) — 목록 아래 전체 폭 */}
+          {active && (
+            <div
+              id={PANEL_ID}
+              role="region"
+              aria-label={`${active.title} 상세`}
+              aria-live="polite"
+              className="min-w-0 w-full"
+            >
+              {active.detailTabs && active.detailTabs.length > 0 ? (
+                <ProjectTabsView project={active} />
+              ) : (
+                <ProjectCard project={active} />
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </section>
   );
