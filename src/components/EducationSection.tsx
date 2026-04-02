@@ -215,10 +215,6 @@ export function EducationSection() {
                   </div>
                 </div>
 
-                <p className="mb-6 text-xs font-medium uppercase tracking-wider text-zinc-500">
-                  구성 3기둥
-                </p>
-
                 <PillarList pillars={courseB.pillars} />
               </div>
 
