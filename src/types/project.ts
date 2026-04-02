@@ -27,6 +27,8 @@ export interface ProjectItem {
   githubUrl: string;
   /** PDF URL, 없으면 버튼 미표시 */
   pdfUrl?: string | null;
+  /** 배포(라이브) 사이트 URL, 없으면 버튼 미표시 */
+  liveUrl?: string | null;
   tags: string[];
   /** true면 상단에 시연 영상(플레이스홀더) 영역 표시 */
   showDemoPlaceholder?: boolean;

@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { ChevronDown, ExternalLink, FileText, Github, Play } from "lucide-react";
+import {
+  ChevronDown,
+  ExternalLink,
+  FileText,
+  Github,
+  Globe,
+  Play,
+} from "lucide-react";
 import type { ProjectItem } from "../types/project";
 
 type ProjectTabsViewProps = {
@@ -40,6 +47,18 @@ export function ProjectTabsView({ project }: ProjectTabsViewProps) {
             >
               <FileText className="h-4 w-4" aria-hidden />
               PDF
+              <ExternalLink className="h-3.5 w-3.5 opacity-70" aria-hidden />
+            </a>
+          )}
+          {project.liveUrl && (
+            <a
+              href={project.liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-3 py-1.5 text-sm font-medium text-emerald-400 transition hover:bg-emerald-500/20"
+            >
+              <Globe className="h-4 w-4" aria-hidden />
+              라이브
               <ExternalLink className="h-3.5 w-3.5 opacity-70" aria-hidden />
             </a>
           )}
