@@ -1,4 +1,4 @@
-import { useMemo, useState, type MouseEvent } from "react";
+import { Fragment, useMemo, useState, type MouseEvent } from "react";
 import { FolderGit2 } from "lucide-react";
 import type { ProjectItem } from "../types/project";
 import { ProjectCard } from "./ProjectCard";
@@ -50,26 +50,44 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
           role="tablist"
           aria-label="프로젝트 선택"
         >
-          {projects.map((p) => {
+          {projects.map((p, idx) => {
             const selected = p.id === active?.id;
+            const kind = p.collaboration ?? "team";
+            const prevKind = idx > 0 ? (projects[idx - 1].collaboration ?? "team") : undefined;
+            const showGroupLabel = idx === 0 || prevKind !== kind;
+            const groupLabel = kind === "individual" ? "개인 프로젝트" : "팀 프로젝트";
+
             return (
-              <div key={p.id} className="inline-flex" {...projectCardLift}>
-                <button
-                  type="button"
-                  role="tab"
-                  aria-selected={selected}
-                  aria-controls={`project-panel-${p.id}`}
-                  id={`project-tab-${p.id}`}
-                  onClick={() => setActiveId(p.id)}
-                  className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
-                    selected
-                      ? "bg-accent/20 text-accent shadow-inner"
-                      : "text-zinc-400 hover:bg-white/5 hover:text-zinc-200"
-                  }`}
-                >
-                  {p.title}
-                </button>
-              </div>
+              <Fragment key={p.id}>
+                {showGroupLabel && (
+                  <div
+                    className="flex w-full basis-full items-center gap-2 py-1.5 sm:py-0"
+                    role="presentation"
+                  >
+                    <span className="shrink-0 text-[11px] font-medium uppercase tracking-wider text-zinc-500">
+                      {groupLabel}
+                    </span>
+                    <span className="h-px min-w-[1.5rem] flex-1 bg-white/10" aria-hidden />
+                  </div>
+                )}
+                <div className="inline-flex" {...projectCardLift}>
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected={selected}
+                    aria-controls={`project-panel-${p.id}`}
+                    id={`project-tab-${p.id}`}
+                    onClick={() => setActiveId(p.id)}
+                    className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
+                      selected
+                        ? "bg-accent/20 text-accent shadow-inner"
+                        : "text-zinc-400 hover:bg-white/5 hover:text-zinc-200"
+                    }`}
+                  >
+                    {p.title}
+                  </button>
+                </div>
+              </Fragment>
             );
           })}
         </div>

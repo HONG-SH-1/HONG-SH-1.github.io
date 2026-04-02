@@ -1,30 +1,7 @@
 [
   {
-    "id": "fds",
-    "title": "FDS — 부도 위험 데이터 분석",
-    "description": "불균형 분포 탐색·EDA, 전처리, XGBoost 분류, Streamlit 대시보드, SHAP으로 예측 근거를 시각화한 데이터·XAI 포커스 프로젝트.",
-    "githubUrl": "https://github.com/HONG-SH-1",
-    "pdfUrl": null,
-    "tags": [
-      "Python",
-      "Pandas",
-      "Imbalanced data",
-      "XGBoost",
-      "Streamlit",
-      "SHAP"
-    ],
-    "showDemoPlaceholder": false,
-    "detailTabs": [
-      {
-        "id": "overview",
-        "label": "개요",
-        "images": ["screenshots/fds.png"],
-        "content": "【요약】\n\n• 클래스 불균형·분포·결측 등 EDA 및 전처리\n• XGBoost 기반 위험도 분류 및 검증 지표 정리\n• Streamlit으로 지표·차트·인터랙션 제공\n• SHAP으로 예측에 기여한 특성 설명\n\n상단 이미지는 대시보드/분석 화면 캡처입니다. 실제 저장소·캡처는 배포 전에 교체해도 됩니다."
-      }
-    ]
-  },
-  {
     "id": "ailaw",
+    "collaboration": "team",
     "title": "Ai-Law",
     "description": "Spring Boot + React + Oracle + FastAPI 기반 법률 AI 서비스.\nJWT RTR 인증, AES-256 암호화, Bucket4j Rate Limiter,\n관리자 RBAC 12개 기능, WebSocket 실시간 알림 구현.",
     "githubUrl": "https://github.com/MadSadly/LawPartner",
@@ -119,6 +96,7 @@
   },
   {
     "id": "medneduro",
+    "collaboration": "team",
     "title": "MedNeduro",
     "description": "Spring MVC + Oracle + MyBatis 기반 의료 플랫폼.\nInterceptor 기반 역할별 접근 권한 검증,\nIpMaskingSerializer + 커스텀 어노테이션으로 IP 자동 마스킹,\n전체 DB 설계 담당.",
     "githubUrl": "https://github.com/HONG-SH-1/MedNeduro",
@@ -180,6 +158,31 @@
         "label": "팀원 및 역할",
         "images": ["projects/medneduro/team.png"],
         "content": "• 변운조(조장) — 의료 영상 처리 프로세스 설계, NII 업로드→분석→진단 워크플로, PPT·발표\n• 김민수(조원) — 로그인·권한, 촬영 영상·분석 결과 조회 UI, 의료 데이터 DB·조회 로직\n• 이준오(조장) — MRI 촬영 데이터 업로드, 환자별 NII 관리, DB 내 촬영 데이터 저장·유지\n• 홍승현(조원) — MRI 기반 진단 입력, 진단 코멘트·환자 기록 저장, 진단 이력·DB 연동"
+      }
+    ]
+  },
+  {
+    "id": "fds",
+    "collaboration": "individual",
+    "title": "신용카드 이상거래(FDS) 분류 [진행중]",
+    "description": "Kaggle 신용카드 사기(불균형) 데이터 기준 — EDA·전처리, XGBoost 이진 분류, Streamlit 대시보드, SHAP으로 이상 거래 탐지 근거를 시각화한 금융 사기 탐지 포커스 프로젝트.",
+    "githubUrl": "https://github.com/HONG-SH-1",
+    "pdfUrl": null,
+    "tags": [
+      "Python",
+      "Pandas",
+      "Credit card fraud",
+      "Imbalanced data",
+      "XGBoost",
+      "Streamlit",
+      "SHAP"
+    ],
+    "showDemoPlaceholder": false,
+    "detailTabs": [
+      {
+        "id": "overview",
+        "label": "개요",
+        "content": "【요약 — 신용카드 이상거래(FDS)】\n\n• 극단적 클래스 불균형·거래 특성 분포 EDA 및 전처리\n• XGBoost 기반 사기/정상 이진 분류 및 검증 지표(Recall·AUC 등) 정리\n• Streamlit으로 지표·차트·인터랙션 제공\n• SHAP으로 사기로 예측된 거래의 특성 기여도 설명"
       }
     ]
   }

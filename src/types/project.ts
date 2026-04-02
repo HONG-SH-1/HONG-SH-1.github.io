@@ -20,6 +20,8 @@ export interface ProjectDetailTab {
 /** JSON 설정으로 불러오는 프로젝트 항목 타입 */
 export interface ProjectItem {
   id: string;
+  /** 팀 / 개인 구분 — 프로젝트 탭 그룹 라벨에 사용 */
+  collaboration?: "team" | "individual";
   title: string;
   description: string;
   githubUrl: string;
