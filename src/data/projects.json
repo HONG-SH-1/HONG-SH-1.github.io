@@ -1,5 +1,29 @@
 [
   {
+    "id": "fds",
+    "title": "FDS — 부도 위험 데이터 분석",
+    "description": "불균형 분포 탐색·EDA, 전처리, XGBoost 분류, Streamlit 대시보드, SHAP으로 예측 근거를 시각화한 데이터·XAI 포커스 프로젝트.",
+    "githubUrl": "https://github.com/HONG-SH-1",
+    "pdfUrl": null,
+    "tags": [
+      "Python",
+      "Pandas",
+      "Imbalanced data",
+      "XGBoost",
+      "Streamlit",
+      "SHAP"
+    ],
+    "showDemoPlaceholder": false,
+    "detailTabs": [
+      {
+        "id": "overview",
+        "label": "개요",
+        "images": ["screenshots/fds.png"],
+        "content": "【요약】\n\n• 클래스 불균형·분포·결측 등 EDA 및 전처리\n• XGBoost 기반 위험도 분류 및 검증 지표 정리\n• Streamlit으로 지표·차트·인터랙션 제공\n• SHAP으로 예측에 기여한 특성 설명\n\n상단 이미지는 대시보드/분석 화면 캡처입니다. 실제 저장소·캡처는 배포 전에 교체해도 됩니다."
+      }
+    ]
+  },
+  {
     "id": "ailaw",
     "title": "Ai-Law",
     "description": "Spring Boot + React + Oracle + FastAPI 기반 법률 AI 서비스.\nJWT RTR 인증, AES-256 암호화, Bucket4j Rate Limiter,\n관리자 RBAC 12개 기능, WebSocket 실시간 알림 구현.",

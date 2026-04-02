@@ -210,7 +210,7 @@ export function ProjectTabsView({ project }: ProjectTabsViewProps) {
                   <figure key={src} className="overflow-hidden rounded-lg border border-white/10 bg-zinc-950/50">
                     <img
                       src={publicAssetUrl(src)}
-                      alt=""
+                      alt={`${project.title} · ${activeTab.label} 참고 이미지`}
                       className="w-full object-contain"
                       loading="lazy"
                     />
