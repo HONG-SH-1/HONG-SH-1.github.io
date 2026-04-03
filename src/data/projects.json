@@ -166,26 +166,32 @@
   {
     "id": "fds",
     "collaboration": "individual",
-    "title": "신용카드 이상거래(FDS) 분류 [진행중]",
-    "description": "Kaggle 신용카드 사기(불균형) 데이터 기준 — EDA·전처리, XGBoost 이진 분류, Streamlit 대시보드, SHAP으로 이상 거래 탐지 근거를 시각화한 금융 사기 탐지 포커스 프로젝트.",
-    "githubUrl": "https://github.com/HONG-SH-1",
-    "pdfUrl": null,
+    "title": "신용카드 이상거래(FDS) 분류",
+    "description": "Credit card fraud prototype: SMOTETomek on train only, XGBoost, Streamlit dashboard with threshold-sensitive Recall / F2 and fixed PR-AUC, SHAP waterfall explanations.",
+    "githubUrl": "https://github.com/HONG-SH-1/creditcard-fds-dashboard.git",
+    "pdfUrl": "/assets/fds.pdf",
     "liveUrl": null,
     "tags": [
       "Python",
-      "Pandas",
-      "Credit card fraud",
-      "Imbalanced data",
+      "pandas",
+      "NumPy",
+      "scikit-learn",
+      "imbalanced-learn",
       "XGBoost",
+      "SHAP",
       "Streamlit",
-      "SHAP"
+      "matplotlib",
+      "joblib",
+      "Jupyter",
+      "seaborn"
     ],
-    "showDemoPlaceholder": false,
+    "showDemoPlaceholder": true,
+    "demoVideoSrc": "videos/fds-overview.mp4",
     "detailTabs": [
       {
         "id": "overview",
         "label": "개요",
-        "content": "【요약 — 신용카드 이상거래(FDS)】\n\n• 극단적 클래스 불균형·거래 특성 분포 EDA 및 전처리\n• XGBoost 기반 사기/정상 이진 분류 및 검증 지표(Recall·AUC 등) 정리\n• Streamlit으로 지표·차트·인터랙션 제공\n• SHAP으로 사기로 예측된 거래의 특성 기여도 설명"
+        "content": "【요약 — 신용카드 이상거래(FDS) 프로토타입】\n\n■ 데이터:\n- Kaggle Credit Card Fraud Detection 공개 CSV (dataset/creditcard.csv, 약 28만 건).\n- 극심한 클래스 불균형 환경에서 EDA·전처리 수행.\n\n■ 전처리·분할:\n- Time: 일 단위 주기(86400초) 기준 sin/cos 파생 후 원시 Time 제거.\n- Amount: RobustScaler 변환.\n- 층화 8:2 Hold-out (test_size=0.2, random_state=42).\n- Train에만 imblearn의 SMOTETomek(random_state=42) 적용; Test는 미증식·원 불균형 유지.\n\n■ 모델:\n- XGBoost 이진 분류 (n_estimators=100, learning_rate=0.1, base_score=0.5, random_state=42, n_jobs=-1).\n- RandomForest와의 2-Track 비교·혼동행렬 등은 노트북·보고서용 스크립트에서 수행.\n- 배포·시연 앱(Streamlit)은 XGBoost 단일 모델만 사용.\n\n■ 앱·지표:\n- Streamlit에서 임계값 슬라이더로 예측 0/1을 바꿀 때마다 동일 Hold-out 테스트셋에 대해 Recall, F2-Score(β=2) 재계산.\n- PR-AUC(average precision)는 전체 y_prob로 정해지는 값이라 임계값과 무관·고정 표시.\n\n■ XAI:\n- shap.Explainer에 사기 확률 callable(predict_proba[:,1])과 배경 표본(테스트에서 최대 500건)을 사용해 단건 워터폴로 변수별 기여 시각화.\n- 한글 축 라벨·matplotlib 후처리는 shap_waterfall_style 모듈로 통일.\n\n■ 실행 구조:\n- train_save_artifacts.py로 joblib 아티팩트(fds_model.pkl, 스케일러, X_test, y_test)를 저장하면 앱은 학습 없이 로드.\n- 아티팩트가 없으면 fds_pipeline.train_xgb_pipeline으로 폴백 학습 (시연 전 사전 생성 권장)."
       }
     ]
   }

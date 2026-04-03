@@ -47,7 +47,20 @@ const groups: StackGroup[] = [
   {
     title: "AI / Data",
     icon: Sparkles,
-    items: ["Pandas", "Scikit-learn", "LangChain", "FastAPI", "Django"],
+    items: [
+      "Pandas",
+      "NumPy",
+      "Scikit-learn",
+      "imbalanced-learn",
+      "XGBoost",
+      "SHAP",
+      "Streamlit",
+      "Matplotlib",
+      "Jupyter",
+      "LangChain",
+      "FastAPI",
+      "Django",
+    ],
   },
   {
     title: "DevOps / Tools",
