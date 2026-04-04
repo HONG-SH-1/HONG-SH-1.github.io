@@ -23,7 +23,7 @@ export function Hero() {
         <div className="max-w-[40rem]">
           <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[13px] text-accent backdrop-blur-sm">
             <Sparkles className="h-3.5 w-3.5 shrink-0" aria-hidden />
-            Backend Developer
+            Full-Stack Developer
           </p>
 
           <div
@@ -59,7 +59,7 @@ export function Hero() {
           <h1 className="mb-10 text-balance break-keep text-[1.375rem] font-bold leading-[1.65] tracking-normal text-zinc-100 sm:text-2xl sm:leading-[1.62] lg:text-[1.65rem] lg:leading-[1.68]">
             JWT 인증 시스템, AES-256 암호화, Rate Limiter 등
             <br />
-            보안과 안정성을 함께 설계하는 백엔드 개발자{" "}
+            보안과 안정성을 함께 설계하는 풀스택 개발자{" "}
             <span className="font-extrabold text-accent drop-shadow-[0_0_20px_rgba(34,211,238,0.28)]">
               홍승현
             </span>
@@ -80,7 +80,7 @@ export function Hero() {
               <br />
               보안 시스템을 직접 설계하고 구현한 경험이 있으며,
               <br />
-              금융권·보안·SI 백엔드 포지션을 목표로 준비 중입니다.
+              금융권·보안·SI 풀스택 포지션을 목표로 준비 중입니다.
             </p>
           </div>
         </div>
