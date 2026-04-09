@@ -1,6 +1,25 @@
 import { Sparkles } from "lucide-react";
 import { TypeAnimation } from "react-type-animation";
 
+/** 역할 칩 — 각각 테마 색으로 구분 (풀스택 / AI·ML / 데이터) */
+const ROLE_CHIPS = [
+  {
+    label: "Full-Stack Developer",
+    className:
+      "border-accent/40 bg-accent/10 text-accent shadow-[0_0_20px_-8px_rgba(34,211,238,0.35)]",
+  },
+  {
+    label: "AI/ML Engineer",
+    className:
+      "border-violet-400/35 bg-violet-500/10 text-violet-200 shadow-[0_0_20px_-8px_rgba(167,139,250,0.25)]",
+  },
+  {
+    label: "Data Engineer",
+    className:
+      "border-emerald-400/35 bg-emerald-500/10 text-emerald-200 shadow-[0_0_20px_-8px_rgba(52,211,153,0.22)]",
+  },
+] as const;
+
 /** 히어로: 지정 문구 그대로 표시 (메인 인트로) */
 export function Hero() {
   return (
@@ -21,10 +40,23 @@ export function Hero() {
       <div className="relative mx-auto max-w-5xl">
         {/* 소개 타이포는 폭을 좁혀 한 줄 길이(약 45~65자)를 맞춰 가독성 확보 */}
         <div className="max-w-[40rem]">
-          <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[13px] text-accent backdrop-blur-sm">
-            <Sparkles className="h-3.5 w-3.5 shrink-0" aria-hidden />
-            Full-Stack Developer
-          </p>
+          <div
+            className="mb-5 flex max-w-full flex-wrap items-center gap-2 sm:gap-2.5"
+            aria-label={ROLE_CHIPS.map((c) => c.label).join(", ")}
+          >
+            <Sparkles
+              className="h-3.5 w-3.5 shrink-0 text-accent opacity-90"
+              aria-hidden
+            />
+            {ROLE_CHIPS.map(({ label, className }) => (
+              <span
+                key={label}
+                className={`inline-flex items-center rounded-full border px-2.5 py-1 text-[12px] font-medium backdrop-blur-sm sm:px-3 sm:text-[13px] ${className}`}
+              >
+                {label}
+              </span>
+            ))}
+          </div>
 
           <div
             style={{
