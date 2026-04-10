@@ -89,9 +89,8 @@ export function Hero() {
           </div>
 
           <h1 className="mb-10 text-balance break-keep text-[1.375rem] font-bold leading-[1.65] tracking-normal text-zinc-100 sm:text-2xl sm:leading-[1.62] lg:text-[1.65rem] lg:leading-[1.68]">
-            JWT 인증 시스템, AES-256 암호화, Rate Limiter 등
-            <br />
-            보안과 안정성을 함께 설계하는 풀스택 개발자{" "}
+            JWT RTR, AES-256, MLP·Bi-LSTM Cascade 앙상블로 금융 FDS · 보안
+            시스템을 설계하는 풀스택 엔지니어{" "}
             <span className="font-extrabold text-accent drop-shadow-[0_0_20px_rgba(34,211,238,0.28)]">
               홍승현
             </span>
@@ -100,19 +99,23 @@ export function Hero() {
         </div>
 
         <div className="max-w-[40rem] rounded-2xl border border-white/10 bg-white/[0.05] p-6 shadow-glass backdrop-blur-md sm:p-8">
-          {/* 본문은 문장 단위로 나눠 시선이 머물기 쉽게, 대비는 zinc-300으로 상향 */}
           <div className="space-y-5 text-[1.0625rem] leading-[1.85] text-zinc-300 sm:text-lg sm:leading-[1.82]">
             <p className="break-keep text-pretty">
               데이터 무결성과 방어적 아키텍처를 중심으로 개발합니다.
               <br />
-              단순히 동작하는 코드가 아닌, 보안과 안정성을 함께 설계하는 것을 지향합니다.
+              단순히 동작하는 코드가 아닌, 진입점부터 외부 공격을 차단하는 보안 인프라
+              설계를 지향합니다.
             </p>
             <p className="break-keep text-pretty">
-              JWT RTR 전략, AES-256 암호화, Bucket4j Rate Limiter 등
+              JWT RTR 전략, AES-256 암호화, Bucket4j Rate Limiter로 Zero-Trust
+              백엔드를 구축하고,
               <br />
-              보안 시스템을 직접 설계하고 구현한 경험이 있으며,
-              <br />
-              금융권·보안·SI 풀스택 포지션을 목표로 준비 중입니다.
+              MLP → Bi-LSTM Cascade 앙상블과 SHAP 기반 설명 가능한 AI(XAI)를 직접
+              설계·구현한 경험이 있습니다.
+            </p>
+            <p className="break-keep text-pretty">
+              보안과 안정성이 요구되는 환경에서, 백엔드부터 AI까지 풀사이클로 신뢰할 수
+              있는 시스템을 만드는 것을 목표로 준비 중입니다.
             </p>
           </div>
         </div>
