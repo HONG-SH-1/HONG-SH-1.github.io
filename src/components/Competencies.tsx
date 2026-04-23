@@ -1,6 +1,6 @@
 import { CheckCircle2 } from "lucide-react";
 
-/** 핵심 역량 — 최종 확정 7개 */
+/** 핵심 역량 */
 const items = [
   "SpringBoot 기반 REST API 및 비동기 서버 로직 설계/구현",
   "JWT RTR 전략 및 Spring Security 기반 Zero-Trust 인증/인가 시스템 설계",
@@ -19,7 +19,7 @@ export function Competencies() {
           Core Competencies
         </h2>
         <p className="mb-10 text-2xl font-semibold text-zinc-100">
-          핵심 역량 — 최종 확정 7개
+          핵심 역량
         </p>
 
         <ul className="grid gap-4 sm:grid-cols-1 lg:grid-cols-2">
