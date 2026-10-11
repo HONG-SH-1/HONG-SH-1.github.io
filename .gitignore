@@ -1,0 +1,7 @@
+node_modules
+dist
+*.local
+.DS_Store
+.env
+인수인계.md
+프로젝트_공부.md

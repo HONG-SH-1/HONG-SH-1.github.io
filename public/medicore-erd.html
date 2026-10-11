@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>MediCore · SH 모듈 ERD</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#e8ecf0;font-family:'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif;padding:32px;min-width:1180px}
+.page-title{font-size:13px;font-weight:700;color:#2c3e50;letter-spacing:1px;margin-bottom:6px;text-transform:uppercase}
+.page-sub{font-size:10px;color:#7f8c8d;margin-bottom:20px;letter-spacing:.3px;line-height:1.6;max-width:920px}
+.canvas-wrap{background:#f4f6f9;border:1px solid #d0d7de;border-radius:4px;position:relative;overflow:visible}
+.tbl{position:absolute;border:1px solid #c0ccd8;border-radius:0;overflow:hidden;
+  box-shadow:0 1px 3px rgba(0,0,0,.08);background:#fff;
+  transition:box-shadow .12s,border-color .12s;z-index:2}
+.tbl:hover{box-shadow:0 3px 12px rgba(0,0,0,.18);border-color:#4a7fc1;z-index:20}
+.th{padding:5px 8px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(0,0,0,.15);cursor:default}
+.th-name{color:#fff;font-weight:700;font-size:11.5px;word-break:break-all}
+.th-cnt{color:rgba(255,255,255,.5);font-size:8.5px}
+.row{display:flex;align-items:center;padding:1.5px 7px 1.5px 4px;border-bottom:1px solid #edf0f3;min-height:19px;background:#fff}
+.row:nth-child(even){background:#fafbfc}
+.row:last-child{border-bottom:none}
+.row:hover{background:#eef4fb}
+.row-ico{width:13px;flex-shrink:0;font-size:9px;text-align:center;margin-right:1px}
+.pk-ico{color:#d4860c}.fk-ico{color:#3a6ea8}
+.row-name{flex:1;color:#1a2733;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:10.5px}
+.row-name.is-pk{color:#b8730a;font-weight:600}
+.row-name.is-fk,.row-name.is-nolink{color:#2a5a9c;font-weight:500}
+.row-type{color:#7a8e9c;font-size:8.5px;white-space:nowrap;margin-left:5px;flex-shrink:0}
+.nn{display:inline-block;font-size:7.5px;color:#999;font-weight:700;margin-left:2px;vertical-align:middle}
+svg.ov{position:absolute;top:0;left:0;overflow:visible;pointer-events:none;z-index:1}
+.zone-label{position:absolute;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;opacity:.35;pointer-events:none;z-index:0;color:#2c3e50}
+html, body { overflow: hidden; margin: 0; padding: 0; }
+::-webkit-scrollbar { display: none; }
+#erd-container { cursor: grab; position: absolute; transform-origin: top left; }
+#erd-container.dragging { cursor: grabbing; }
+</style>
+</head>
+<body>
+<div id="erd-container">
+<div class="page-title">⬡ MediCore · SH 모듈 논리 ERD</div>
+<div class="page-sub">
+  DB: <strong>PostgreSQL 16 + pgvector</strong> · PostgreSQL 테이블 4개(공통 + SH) · 파일 KG(entities.jsonl, graph.pkl) ·
+  SH는 module_tag=<strong>eyes</strong>로 의료지식(RAG) 격리 · 안과진단.환자ID ↔ 환자.환자UID는 앱 레벨 매칭(물리 FK 없음) ·
+  마이그레이션: V2/V7/V13(의료지식), V9(안과진단)
+</div>
+<div class="canvas-wrap" id="canvas">
+  <svg class="ov" id="lines">
+    <defs>
+      <marker id="mk-dot" markerWidth="5" markerHeight="5" refX="2.5" refY="2.5">
+        <circle cx="2.5" cy="2.5" r="2" fill="#8aabcc"/>
+      </marker>
+      <marker id="mk-cut" markerWidth="5" markerHeight="5" refX="2.5" refY="2.5">
+        <circle cx="2.5" cy="2.5" r="1.8" fill="#b0bfc8"/>
+      </marker>
+    </defs>
+  </svg>
+</div>
+</div>
+
+<script>
+const TW=210, RH=19, HH=28;
+const GUTTER_W=96;
+const C0=24;
+const C1=C0+TW+GUTTER_W, C2=C1+TW+GUTTER_W, C3=C2+TW+GUTTER_W;
+
+const HDR={
+  rag:'#2e7d56', pat:'#3a6ea8', sh:'#5c3d99',
+  infra:'#8c5a10', file:'#4a5568', ind:'#6b5b8c'
+};
+
+function tH(t){return HH+t.cols.length*RH;}
+
+const TBLS=[
+  // COL0 — 공유 RAG + File KG
+  {id:'의료지식', x:C0, y:20, d:'rag', cols:[
+    {n:'지식ID',t:'bigserial',pk:1},
+    {n:'본문',t:'text',nn:1},
+    {n:'출처',t:'varchar(500)',nn:1},
+    {n:'모듈태그',t:'varchar(50)',nn:1},
+    {n:'임베딩',t:'vector(768)',nn:1},
+    {n:'생성일시',t:'timestamp',nn:1},
+    {n:'태스크유형',t:'varchar(30)',nn:1},
+  ]},
+  {id:'KG추출파일', x:C0, y:210, d:'file', cols:[
+    {n:'청크ID',t:'int',nolink:1},
+    {n:'출처',t:'text'},
+    {n:'엔티티목록',t:'json[]'},
+    {n:'관계목록',t:'json[]'},
+  ]},
+  {id:'지식그래프', x:C0, y:360, d:'file', cols:[
+    {n:'노드',t:'MultiDiGraph'},
+    {n:'엣지',t:'MultiDiGraph'},
+    {n:'빌드메타',t:'meta.json'},
+  ]},
+
+  // COL1 — 공통 환자
+  {id:'환자', x:C1, y:20, d:'pat', cols:[
+    {n:'환자번호',t:'bigserial',pk:1},
+    {n:'환자UID',t:'varchar(50)'},
+    {n:'이름',t:'varchar(100)'},
+    {n:'나이',t:'int'},
+    {n:'성별',t:'varchar(20)'},
+    {n:'혈액형',t:'varchar(20)'},
+    {n:'최근검사일',t:'date'},
+    {n:'담당의',t:'varchar(100)'},
+    {n:'현재투약',t:'varchar(200)'},
+    {n:'진료팀',t:'varchar(200)'},
+    {n:'생성일시',t:'timestamp'},
+  ]},
+
+  // COL2 — SH 전용 진단
+  {id:'안과진단', x:C2, y:20, d:'sh', cols:[
+    {n:'진단번호',t:'bigserial',pk:1},
+    {n:'환자ID',t:'varchar(100)',nn:1,nolink:1},
+    {n:'세션ID',t:'varchar(100)',nn:1},
+    {n:'1차질환',t:'varchar(50)',nn:1},
+    {n:'확신도',t:'double precision',nn:1},
+    {n:'중증도단계',t:'int'},
+    {n:'단계명',t:'varchar(20)'},
+    {n:'응급여부',t:'boolean',nn:1},
+    {n:'응급사유',t:'text'},
+    {n:'GradCAM',t:'text'},
+    {n:'AI소견서',t:'text'},
+    {n:'추론시간',t:'double precision'},
+    {n:'품질점수',t:'double precision'},
+    {n:'모델버전',t:'varchar(50)',nn:1},
+    {n:'저장일시',t:'timestamp',nn:1},
+  ]},
+
+  // COL3 — 인프라
+  {id:'워커노드', x:C3, y:80, d:'infra', cols:[
+    {n:'노드번호',t:'bigserial',pk:1},
+    {n:'이름',t:'varchar(50)',nn:1},
+    {n:'표시명',t:'varchar(100)'},
+    {n:'URL',t:'varchar(255)'},
+    {n:'상태',t:'varchar(20)'},
+    {n:'서킷상태',t:'varchar(20)'},
+    {n:'실패횟수',t:'int'},
+    {n:'OPEN시각',t:'timestamp'},
+    {n:'최종점검',t:'timestamp'},
+    {n:'응답시간',t:'bigint'},
+    {n:'생성일시',t:'timestamp'},
+  ]},
+];
+
+const RELS=[];
+
+const CUTS=[
+  {f:'환자', fc:'환자UID', t:'안과진단', tc:'환자ID', seq:0},
+  {f:'의료지식', fc:'지식ID', t:'KG추출파일', tc:'청크ID', seq:1},
+  {f:'KG추출파일', fc:'청크ID', t:'지식그래프', tc:'노드', seq:2},
+];
+
+const TM={};
+TBLS.forEach(t=>TM[t.id]=t);
+function rowY(t,col){
+  const i=t.cols.findIndex(c=>c.n===col);
+  return t.y+HH+(i<0?0:i)*RH+RH/2;
+}
+
+const GUTTERS=[
+  {lo:C0+TW, hi:C1},
+  {lo:C1+TW, hi:C2},
+  {lo:C2+TW, hi:C3},
+];
+const MARGIN=4;
+
+function buildLanes(g,n){
+  n=Math.max(n,1);
+  const lo=g.lo+MARGIN, hi=g.hi-MARGIN;
+  const inner=hi-lo;
+  const step=inner/(n+1);
+  return Array.from({length:n},(_,i)=>Math.round(lo+step*(i+1)));
+}
+const LEFT_GUTTER={lo:C0-72, hi:C0-8};
+
+function gutterForStubCol(col){
+  if(col>=0&&col<GUTTERS.length) return GUTTERS[col];
+  return {lo:C3+TW, hi:C3+TW+GUTTER_W};
+}
+function colOf(t){
+  if(t.x<=C0+5) return 0;
+  if(t.x<=C1+5) return 1;
+  if(t.x<=C2+5) return 2;
+  return 3;
+}
+function gutterKeyBetween(fc,tc){
+  const lo=Math.min(fc,tc), hi=Math.max(fc,tc);
+  if(lo===hi) return `stub${lo}`;
+  return `g${lo}`;
+}
+
+const laneAssign=new Map();
+function assignAllLanes(allConns){
+  const groups={};
+  allConns.forEach((c,i)=>{
+    const F=TM[c.f], T=TM[c.t];
+    if(!F||!T) return;
+    const y1=rowY(F,c.fc), y2=rowY(T,c.tc);
+    const fc=colOf(F), tc=colOf(T);
+    const key=gutterKeyBetween(fc,tc);
+    if(!groups[key]) groups[key]=[];
+    groups[key].push({id:i,y1,y2,midY:(y1+y2)/2,fc,tc});
+  });
+  Object.entries(groups).forEach(([key,items])=>{
+    items.sort((a,b)=>a.midY-b.midY);
+    const need=Math.max(items.length,1);
+    let pool;
+    if(key.startsWith('g')) pool=buildLanes(GUTTERS[+key.slice(1)],need);
+    else if(key.startsWith('stub')) pool=buildLanes(gutterForStubCol(+key.slice(4)),need);
+    else pool=buildLanes(LEFT_GUTTER,need);
+    items.forEach((item,rank)=>{
+      laneAssign.set(item.id,{val:pool[rank],key,fc:item.fc,tc:item.tc,y1:item.y1,y2:item.y2});
+    });
+  });
+}
+
+function getPath(connIdx){
+  const c=allConns[connIdx];
+  const F=TM[c.f], T=TM[c.t];
+  if(!F||!T) return '';
+  const y1=rowY(F,c.fc), y2=rowY(T,c.tc);
+  const FR=F.x+TW, FL=F.x, TR=T.x+TW, TL=T.x;
+  const info=laneAssign.get(connIdx);
+  if(!info) return '';
+  const {val,key}=info;
+  if(key.startsWith('stub')){
+    const stubX=val;
+    return `M${FR},${y1} H${stubX} V${y2} H${TR}`;
+  }
+  if(key==='left') return `M${FL},${y1} H${val} V${y2} H${TL}`;
+  if(FR+2<=TL) return `M${FR},${y1} H${val} V${y2} H${TL}`;
+  if(TR+2<=FL) return `M${FL},${y1} H${val} V${y2} H${TR}`;
+  return `M${FR},${y1} H${val} V${y2} H${TR}`;
+}
+
+const allConns=[...RELS,...CUTS];
+assignAllLanes(allConns);
+
+const canvas=document.getElementById('canvas');
+
+[
+  {x:C0+4,y:8,t:'공유 RAG · 파일 KG'},
+  {x:C1+4,y:8,t:'공통'},
+  {x:C2+4,y:8,t:'SH 모듈 (eyes)'},
+  {x:C3+4,y:68,t:'인프라'},
+].forEach(z=>{
+  const el=document.createElement('div');
+  el.className='zone-label';
+  el.style.left=z.x+'px';
+  el.style.top=z.y+'px';
+  el.textContent=z.t;
+  canvas.appendChild(el);
+});
+
+TBLS.forEach(t=>{
+  const el=document.createElement('div');
+  el.className='tbl';
+  const hdr=HDR[t.d]||'#3a6ea8';
+  el.style.cssText=`left:${t.x}px;top:${t.y}px;width:${TW}px`;
+  let html=`<div class="th" style="background:${hdr}">
+    <span class="th-name">${t.id}</span>
+    <span class="th-cnt">${t.cols.length}</span>
+  </div>`;
+  t.cols.forEach(col=>{
+    const isPK=!!col.pk,isFK=!!col.fk,isNL=!!col.nolink;
+    const ico=isPK?`<span class="row-ico pk-ico">▶</span>`:
+              (isFK||isNL)?`<span class="row-ico fk-ico">◆</span>`:
+              `<span class="row-ico"></span>`;
+    const nc=isPK?'row-name is-pk':isFK?'row-name is-fk':isNL?'row-name is-nolink':'row-name';
+    const nn=col.nn?`<span class="nn">NN</span>`:'';
+    html+=`<div class="row">${ico}<span class="${nc}">${col.n}${nn}</span><span class="row-type">${col.t}</span></div>`;
+  });
+  el.innerHTML=html;
+  canvas.appendChild(el);
+});
+
+(function sizeCanvas(){
+  let maxB=520, maxR=820;
+  TBLS.forEach(t=>{maxB=Math.max(maxB,t.y+tH(t));maxR=Math.max(maxR,t.x+TW);});
+  canvas.style.height=(maxB+60)+'px';
+  canvas.style.width=(maxR+60)+'px';
+})();
+
+const svg=document.getElementById('lines');
+const FK_COLOR='#b0c4d8', FK_W=1.4;
+
+RELS.forEach((r,i)=>{
+  const d=getPath(i);
+  if(!d) return;
+  const p=document.createElementNS('http://www.w3.org/2000/svg','path');
+  p.setAttribute('d',d);
+  p.setAttribute('stroke',FK_COLOR);
+  p.setAttribute('stroke-width',FK_W);
+  p.setAttribute('fill','none');
+  p.setAttribute('marker-start','url(#mk-dot)');
+  p.setAttribute('marker-end','url(#mk-dot)');
+  svg.appendChild(p);
+});
+
+CUTS.forEach((r,i)=>{
+  const d=getPath(RELS.length+i);
+  if(!d) return;
+  const p=document.createElementNS('http://www.w3.org/2000/svg','path');
+  p.setAttribute('d',d);
+  p.setAttribute('stroke','#b8c8d8');
+  p.setAttribute('stroke-width','1.1');
+  p.setAttribute('stroke-dasharray','5,3');
+  p.setAttribute('fill','none');
+  p.setAttribute('marker-end','url(#mk-cut)');
+  svg.appendChild(p);
+});
+</script>
+<script>
+  let scale = 1;
+  const container = document.getElementById('erd-container');
+  const controls = document.createElement('div');
+  controls.style.cssText = `
+    position: fixed; bottom: 16px; right: 16px; z-index: 999;
+    display: flex; gap: 8px; align-items: center;
+  `;
+  const btnStyle = `
+    width: 32px; height: 32px; border-radius: 6px;
+    background: #1c2230; border: 1px solid rgba(255,255,255,0.15);
+    color: #e2e8f0; font-size: 18px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-family: monospace; line-height: 1;
+  `;
+  const zoomIn = document.createElement('button');
+  zoomIn.textContent = '+';
+  zoomIn.style.cssText = btnStyle;
+  const zoomOut = document.createElement('button');
+  zoomOut.textContent = '−';
+  zoomOut.style.cssText = btnStyle;
+  const resetBtn = document.createElement('button');
+  resetBtn.textContent = '↺';
+  resetBtn.style.cssText = btnStyle;
+  resetBtn.title = '초기화';
+  const label = document.createElement('span');
+  label.style.cssText = `
+    font-family: monospace; font-size: 12px;
+    color: #94a3b8; min-width: 40px; text-align: center;
+  `;
+  label.textContent = '100%';
+  let isDragging = false, startX = 0, startY = 0, translateX = 0, translateY = 0;
+  function applyTransform() {
+    if (!container) return;
+    container.style.transform =
+      `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+    label.textContent = Math.round(scale * 100) + '%';
+  }
+  zoomIn.addEventListener('click', () => {
+    if (scale < 2) { scale = Math.round((scale + 0.1) * 10) / 10; applyTransform(); }
+  });
+  zoomOut.addEventListener('click', () => {
+    if (scale > 0.3) { scale = Math.round((scale - 0.1) * 10) / 10; applyTransform(); }
+  });
+  resetBtn.addEventListener('click', () => {
+    scale = 1; translateX = 0; translateY = 0; applyTransform();
+  });
+  document.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    if (e.deltaY < 0) {
+      if (scale < 2) { scale = Math.round((scale + 0.05) * 100) / 100; applyTransform(); }
+    } else {
+      if (scale > 0.3) { scale = Math.round((scale - 0.05) * 100) / 100; applyTransform(); }
+    }
+  }, { passive: false });
+  if (container) {
+    container.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      startX = e.clientX - translateX;
+      startY = e.clientY - translateY;
+      container.classList.add('dragging');
+    });
+  }
+  document.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    translateX = e.clientX - startX;
+    translateY = e.clientY - startY;
+    applyTransform();
+  });
+  document.addEventListener('mouseup', () => {
+    isDragging = false;
+    if (container) container.classList.remove('dragging');
+  });
+  controls.appendChild(zoomOut);
+  controls.appendChild(label);
+  controls.appendChild(zoomIn);
+  controls.appendChild(resetBtn);
+  document.body.appendChild(controls);
+</script>
+</body>
+</html>
