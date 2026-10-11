@@ -20,7 +20,9 @@ type StackGroup = {
 
 const frequent = ["Java", "Spring Boot", "Spring Security", "SQL", "Python"];
 
-const tools = ["Git", "GitHub Actions", "Claude Code", "Cursor"];
+const devTools = ["Git", "GitHub Actions"];
+
+const aiTools = ["Claude Code", "Cursor"];
 
 const groups: StackGroup[] = [
   {
@@ -109,9 +111,21 @@ export function TechStack() {
                 </li>
               ))}
             </ul>
-            <h3 className="mb-4 mt-5 text-sm font-semibold text-fg">도구</h3>
+            <h3 className="mb-4 mt-5 text-sm font-semibold text-fg">
+              협업·배포
+            </h3>
             <ul className="flex flex-wrap gap-2">
-              {tools.map((name) => (
+              {devTools.map((name) => (
+                <li key={name}>
+                  <span className="tag">{name}</span>
+                </li>
+              ))}
+            </ul>
+            <h3 className="mb-4 mt-5 text-sm font-semibold text-fg">
+              AI 코딩 도구
+            </h3>
+            <ul className="flex flex-wrap gap-2">
+              {aiTools.map((name) => (
                 <li key={name}>
                   <span className="tag">{name}</span>
                 </li>
