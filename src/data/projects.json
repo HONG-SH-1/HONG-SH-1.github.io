@@ -53,7 +53,7 @@
         "label": "ERD",
         "iframeSrc": "/erd.html",
         "images": ["projects/lawpartner/erd.png"],
-        "content": "【논리 ERD 요약: Law-Partner, Total 21 Tables】\n\n■ 핵심 도메인 분리\n• 회원 및 권한 (User & Auth): 회원 중심으로 결제·채팅·알림 등이 1:N 연결. 변호사상세는 1:0 슈퍼-서브 타입으로 설계하여 NULL 공간 낭비 방지.\n• 법률 상담 및 콘텐츠 (Board & AI): 상담게시판 ↔ 변호사답변 ↔ 후기 지식인형 로직 + AI 채팅방 ↔ 채팅이력(RAG 판례 포함)으로 상담 데이터 연속성 확보.\n• 1:1 매칭 상담 (Chat & Schedule): 실시간 채팅방·메시지 1:N 연결, 사건 일정을 캘린더와 연동하여 법률 서비스 핵심 파이프라인 구축.\n\n■ 백엔드 데이터 설계 결정 3가지\n① 의도적 FK 단절 (Loose Coupling)\n접속로그·관리자감사로그는 회원 테이블과 물리적 FK를 끊어 INSERT 시 DB Lock·병목 방지. 회원 탈퇴 후에도 보안·수사용 감사 로그 원본이 영구 보존되도록 설계.\n\n② 1:1 관계 강제 (Single Device Login)\n민감한 법률 데이터 특성을 고려, 회원과 리프레시 토큰을 1:1로 강제. 다중 기기 접속을 막고, 세션 탈취 위험을 DB 모델링 단계에서 줄이도록 설계.\n\n③ 정규화를 통한 확장성 확보\n변호사 증빙 서류를 단일 컬럼이 아닌 변호사증명문서 테이블로 분리(1:N 정규화). 다중 파일 업로드 및 관리자 검수 로직 확장에 유연하게 대응."
+        "content": "【논리 ERD 요약: Law-Partner, Total 22 Tables】\n\n■ 핵심 도메인 분리\n• 회원 및 권한 (User & Auth): 회원 중심으로 결제·채팅·알림 등이 1:N 연결. 변호사상세는 1:0 슈퍼-서브 타입으로 설계하여 NULL 공간 낭비 방지.\n• 법률 상담 및 콘텐츠 (Board & AI): 상담게시판 ↔ 변호사답변 ↔ 후기 지식인형 로직 + AI 채팅방 ↔ 채팅이력(RAG 판례 포함)으로 상담 데이터 연속성 확보.\n• 1:1 매칭 상담 (Chat & Schedule): 실시간 채팅방·메시지 1:N 연결, 사건 일정을 캘린더와 연동하여 법률 서비스 핵심 파이프라인 구축.\n\n■ 백엔드 데이터 설계 결정 3가지\n① 의도적 FK 단절 (Loose Coupling)\n접속로그·관리자감사로그는 회원 테이블과 물리적 FK를 끊어 INSERT 시 DB Lock·병목 방지. 회원 탈퇴 후에도 보안·수사용 감사 로그 원본이 영구 보존되도록 설계.\n\n② 1:1 관계 강제 (Single Device Login)\n민감한 법률 데이터 특성을 고려, 회원과 리프레시 토큰을 1:1로 강제. 다중 기기 접속을 막고, 세션 탈취 위험을 DB 모델링 단계에서 줄이도록 설계.\n\n③ 정규화를 통한 확장성 확보\n변호사 증빙 서류를 단일 컬럼이 아닌 변호사증명문서 테이블로 분리(1:N 정규화). 다중 파일 업로드 및 관리자 검수 로직 확장에 유연하게 대응."
       },
       {
         "id": "team",
@@ -62,7 +62,7 @@
           "projects/lawpartner/team-part1.png",
           "projects/lawpartner/team-part2.png"
         ],
-        "content": "【팀원 및 역할】\n\n• 변운조(조장): 법률 상담 게시판·매칭 알고리즘, AI 법률 상담 화면, 요구사항 정의·프로젝트 총괄\n• 김용(결제): PortOne API 결제 흐름, 변호사 마이페이지, 회원 정보·보안 인증 로직\n• 김민수(메인): 사이트 메인·반응형 UI, WebSocket 1:1 채팅, 일반 회원 마이페이지\n• 홍승현(보안·관리자·DB 설계): JWT 인증·회원 데이터 암호화, Admin·접근 제어, AOP 보안 감사 로그, 로그인·회원가입, 전체 DB 설계(21개 테이블), 배포 후 재빌드·반영\n• 임동주(검색·리뷰): 변호사 검색, 필터, 정렬, 상담 후기·평점, AI 법률 분야 분류·매칭, Q&A 게시판"
+        "content": "【팀원 및 역할】\n\n• 변운조(조장): 법률 상담 게시판·매칭 알고리즘, AI 법률 상담 화면, 요구사항 정의·프로젝트 총괄\n• 김용(결제): PortOne API 결제 흐름, 변호사 마이페이지, 회원 정보·보안 인증 로직\n• 김민수(메인): 사이트 메인·반응형 UI, WebSocket 1:1 채팅, 일반 회원 마이페이지\n• 홍승현(보안·관리자·DB 설계): JWT 인증·회원 데이터 암호화, Admin·접근 제어, AOP 보안 감사 로그, 문의 답변 WebSocket 실시간 알림, 로그인·회원가입, 전체 DB 설계(22개 테이블), 배포 후 재빌드·반영\n• 임동주(검색·리뷰): 변호사 검색, 필터, 정렬, 상담 후기·평점, AI 법률 분야 분류·매칭, Q&A 게시판"
       },
       {
         "id": "schedule",
@@ -99,7 +99,7 @@
     "id": "medneduro",
     "collaboration": "team",
     "title": "MedNeduro",
-    "description": "Spring Boot + Oracle + MyBatis 기반 의료 플랫폼.\nInterceptor 기반 역할별 접근 권한 검증,\nIpMaskingSerializer + 커스텀 어노테이션으로 IP 자동 마스킹,\n전체 DB 설계 담당.",
+    "description": "Spring Boot + Oracle + MyBatis 기반 의료 플랫폼.\nInterceptor 기반 역할별 접근 권한 검증,\n커스텀 어노테이션 기반 IP 마스킹 로직, 업로드 파일 헤더 검사,\n전체 DB 설계 담당.",
     "githubUrl": "https://github.com/HONG-SH-1/MedNeduro",
     "pdfUrl": null,
     "liveUrl": null,
@@ -135,7 +135,7 @@
         "id": "architecture",
         "label": "시스템 아키텍쳐",
         "images": ["projects/medneduro/architecture.png"],
-        "content": "① UI: 2D/3D 뷰어, 관리자 대시보드, DICOM·NIfTI 업로드\n② 앱 서버(Spring): 인증·RBAC, REST API(ModelController/Service), 감사 로그, Python 러너로 분석 프로세스 호출\n③ 분석 엔진(Python): Nibabel·OpenCV로 2D 슬라이스, NumPy·OBJ로 3D 메시 생성\n④ 저장소: Oracle(MyBatis) + 원본·결과 파일(NIfTI/DICOM, PNG, OBJ)"
+        "content": "① UI: 2D/3D 뷰어, 관리자 대시보드, DICOM·NIfTI 업로드\n② 앱 서버(Spring): 인증·RBAC, REST API(ModelController/Service), Python 러너로 분석 프로세스 호출\n③ 분석 엔진(Python): Nibabel·OpenCV로 2D 슬라이스, NumPy·OBJ로 3D 메시 생성\n④ 저장소: Oracle(MyBatis) + 원본·결과 파일(NIfTI/DICOM, PNG, OBJ)"
       },
       {
         "id": "network",
@@ -153,13 +153,43 @@
         "id": "erd",
         "label": "ERD",
         "images": ["projects/medneduro/erd.png"],
-        "content": "INTEGRATED_ACCOUNT 중심으로 의료진·환자·일반 사용자 계정을 분리하고, MEDICAL_MRI_FOLDER / GENERAL_MRI_FOLDER에 영상 메타·AI 분석 상태를 둡니다. DIAGNOSIS_COMMENT_2D·3D로 단면·메시 좌표 기반 진단 코멘트를 저장하고, MRI_ACCESS_LOG로 열람 이력을 남깁니다."
+        "content": "INTEGRATED_ACCOUNT 중심으로 의료진·환자·일반 사용자 계정을 분리하고, MEDICAL_MRI_FOLDER / GENERAL_MRI_FOLDER에 영상 메타·AI 분석 상태를 둡니다. DIAGNOSIS_COMMENT_2D·3D로 단면·메시 좌표 기반 진단 코멘트를 저장하고, MRI_ACCESS_LOG(의사·MRI·열람 시각) 테이블도 설계했습니다."
       },
       {
         "id": "team",
         "label": "팀원 및 역할",
         "images": [],
-        "content": "4인으로 시작해 1명이 중도 하차, 3인으로 완료했습니다.\n\n• 변운조(조장): 의료 영상 처리 프로세스 설계, NII 업로드→분석→진단 워크플로, 중도 하차 팀원의 MRI 촬영 데이터 업로드·환자별 NII 관리·DB 저장 인계, PPT·발표\n• 김민수(조원): 로그인·권한, 촬영 영상·분석 결과 조회 UI, 의료 데이터 DB·조회 로직\n• 이준오(조원, 중도 하차): MRI 촬영 데이터 업로드 담당으로 시작, 중도 하차 후 조장에게 인계\n• 홍승현(보안 리드, DB 설계): Interceptor 기반 역할별 접근 권한 검증, 접근 로그 IP 자동 마스킹, 접근 이력 수집. 기능은 회원가입과 진단 이력 DB 연동을 맡았습니다."
+        "content": "4인으로 시작해 1명이 중도 하차, 3인으로 완료했습니다.\n\n• 변운조(조장): 의료 영상 처리 프로세스 설계, NII 업로드→분석→진단 워크플로, 중도 하차 팀원의 MRI 촬영 데이터 업로드·환자별 NII 관리·DB 저장 인계, PPT·발표\n• 김민수(조원): 로그인·권한, 촬영 영상·분석 결과 조회 UI, 의료 데이터 DB·조회 로직\n• 이준오(조원, 중도 하차): MRI 촬영 데이터 업로드 담당으로 시작, 중도 하차 후 조장에게 인계\n• 홍승현(보안 리드, DB 설계): Interceptor 기반 역할별 접근 권한 검증, IP 마스킹 로직(커스텀 어노테이션·직렬화기), 업로드 파일 헤더 검사, 전체 DB 설계. 기능은 아이디 형식 제한과 로그아웃 처리를 맡았습니다."
+      }
+    ]
+  },
+  {
+    "id": "deepguard",
+    "collaboration": "individual",
+    "title": "DeepGuard: 딥러닝 NIDS",
+    "description": "CICIDS2017 기반 NIDS 프로토타입. MLP(W5)와 Bi-LSTM(W20) 오토인코더를 2단 Cascade로 묶고, 동기화 슬라이딩 윈도우와 2단계 배치 추론을 Streamlit 대시보드로 구현했습니다.",
+    "githubUrl": "https://github.com/HONG-SH-1/DeepGuard.git",
+    "pdfUrl": "/assets/DeepGuard_Presentation.pdf",
+    "liveUrl": null,
+    "tags": [
+      "Python",
+      "TensorFlow",
+      "Keras",
+      "Streamlit",
+      "CICIDS2017",
+      "Autoencoder",
+      "LSTM",
+      "Bi-LSTM",
+      "NIDS",
+      "Anomaly detection"
+    ],
+    "showDemoPlaceholder": true,
+    "demoVideoSrc": "videos/DeepGuard_Presentation.mp4",
+    "detailTabs": [
+      {
+        "id": "overview",
+        "label": "개요",
+        "content": "【요약: 딥러닝 기반 실시간 네트워크 침입 탐지 시스템(NIDS) 프로토타입】\n\n■ 데이터:\n• CICIDS2017 (Canadian Institute for Cybersecurity) 공개 데이터셋.\n• Monday(BENIGN 100%) → 학습, Tuesday(BruteForce) / Wednesday(DoS) / Friday(DDoS) → 테스트.\n• 전체 79개 피처 → IP/Port 등 식별자 제거 후 78개 사용.\n• 학습 데이터 529,481개 → 학습:검증 9:1 분할 후 절반 사용 → 약 238,000개.\n\n■ 전처리:\n• 컬럼명 공백 제거 → 무한대/결측치 제거 → IP/Port 식별자 제거(과적합 방지).\n• MinMaxScaler: 정상 데이터(BENIGN)로만 fit, 테스트 데이터는 transform만 적용(Data Leakage 방지).\n• Sliding Window(3D 텐서 변환): 1차용 W=5 → (samples, 5, 78), 2차용 W=20 → (samples, 20, 78).\n• 메모리 관리: W5/W20 분리 저장, 테스트 W20 50,000개 샘플링.\n• 다중공선성 미제거: Autoencoder 인코더의 자가 압축 능력으로 중복 정보 처리 가능.\n  원본 78개 피처 유지로 모델 자가 학습 능력 우선 검증.\n  → 향후 PCA/피처 선택 적용으로 모델 경량화 예정.\n\n■ 아키텍처 (2-Tier Cascade):\n• 1차 방어선(W=5, relu): MLP / 1D-CNN / GRU Autoencoder 벤치마크 → MLP 선정.\n  • 선정 근거: Recall 차이 0.004로 유의미하지 않음, CNN 대비 속도 39% 우위(6.50s vs 10.71s).\n  • 튜닝: 임계값 완화(p95→p90)로 BruteForce Recall 2배 향상(0.066→0.128).\n• 2차 방어선(W=20, tanh): LSTM / Bi-LSTM Autoencoder 벤치마크 → Bi-LSTM 선정.\n  • relu→tanh 변경: W=20 긴 시퀀스의 기울기 폭발을 막기 위한 선택. 평균 재현율 LSTM 0.520→0.564, Bi-LSTM 0.556→0.573 (에폭당 속도는 비슷).\n  • BASE(u64, p95)가 최적: units 축소/임계값 강화 시 DoS Recall 급락 확인.\n• 1차 MLP(6.50s/epoch) → 2차 Bi-LSTM(120.77s/epoch): 속도 약 19배 차이가 Cascade 설계의 핵심 근거.\n\n■ 모델·임계값:\n• 1차 최종: TUN2_u64_p90_nodrop.keras, 임계값 0.000150 (p90 percentile MSE).\n• 2차 최종: bilstm_tanh_base.keras, 임계값 0.000907 (p95 percentile MSE).\n• 두 모델 모두 Autoencoder 기반 비지도학습 → 정상 패턴만 학습, MSE 기반 이상 탐지.\n\n■ 테스트 성능 (2차 Bi-LSTM, BASE):\n• 재현율 DDoS 0.905 / DoS 0.681 / BruteForce 0.135, 평균 정밀도 0.384.\n\n■ 앱·시연:\n• Streamlit 2-Tier 실시간 탐지 대시보드.\n• demo_raw_3.csv(6,000개, 연속 추출) 또는 사용자 CSV 업로드.\n• 동기화 슬라이딩 윈도우: 동일 시점 t에서 W5/W20 동시 생성 → 인덱스 일치.\n• 배치 추론(batch_size=256): 1차 MLP 전체 처리 → 의심 샘플만 2차 Bi-LSTM 정밀 검사.\n• 시연 결과(데모 데이터 6,000개, 연속 구간): BruteForce 0.0%(구조적 한계) / DoS 64.8% / DDoS 99.6%.\n\n■ 한계·향후 계획:\n• BruteForce 초기 패킷이 정상 로그인과 수학적으로 동일 → Rule-based(Snort/Suricata) 융합 필요.\n• 현재 CSV 파일 기반 시연 → FastAPI 실시간 패킷 스트림 연동 예정.\n• 단일 데이터셋(CICIDS2017) 의존 → 다양한 환경 검증 필요.\n• Java Spring Boot 연동 → 탐지 결과 DB 저장 예정."
       }
     ]
   },
@@ -278,36 +308,6 @@
     ]
   },
   {
-    "id": "deepguard",
-    "collaboration": "individual",
-    "title": "딥러닝 기반 실시간 NIDS",
-    "description": "CICIDS2017 기반 NIDS 프로토타입. MLP(W5)와 Bi-LSTM(W20) 오토인코더를 2단 Cascade로 묶고, 동기화 슬라이딩 윈도우와 2단계 배치 추론을 Streamlit 대시보드로 구현했습니다.",
-    "githubUrl": "https://github.com/HONG-SH-1/DeepGuard.git",
-    "pdfUrl": "/assets/DeepGuard_Presentation.pdf",
-    "liveUrl": null,
-    "tags": [
-      "Python",
-      "TensorFlow",
-      "Keras",
-      "Streamlit",
-      "CICIDS2017",
-      "Autoencoder",
-      "LSTM",
-      "Bi-LSTM",
-      "NIDS",
-      "Anomaly detection"
-    ],
-    "showDemoPlaceholder": true,
-    "demoVideoSrc": "videos/DeepGuard_Presentation.mp4",
-    "detailTabs": [
-      {
-        "id": "overview",
-        "label": "개요",
-        "content": "【요약: 딥러닝 기반 실시간 네트워크 침입 탐지 시스템(NIDS) 프로토타입】\n\n■ 데이터:\n• CICIDS2017 (Canadian Institute for Cybersecurity) 공개 데이터셋.\n• Monday(BENIGN 100%) → 학습, Tuesday(BruteForce) / Wednesday(DoS) / Friday(DDoS) → 테스트.\n• 전체 79개 피처 → IP/Port 등 식별자 제거 후 78개 사용.\n• 학습 데이터 529,481개 중 50% 샘플링 → 약 265,000개.\n\n■ 전처리:\n• 컬럼명 공백 제거 → 무한대/결측치 제거 → IP/Port 식별자 제거(과적합 방지).\n• MinMaxScaler: 정상 데이터(BENIGN)로만 fit, 테스트 데이터는 transform만 적용(Data Leakage 방지).\n• Sliding Window(3D 텐서 변환): 1차용 W=5 → (samples, 5, 78), 2차용 W=20 → (samples, 20, 78).\n• 메모리 관리: W5/W20 분리 저장, 테스트 W20 50,000개 샘플링.\n• 다중공선성 미제거: Autoencoder 인코더의 자가 압축 능력으로 중복 정보 처리 가능.\n  원본 78개 피처 유지로 모델 자가 학습 능력 우선 검증.\n  → 향후 PCA/피처 선택 적용으로 모델 경량화 예정.\n\n■ 아키텍처 (2-Tier Cascade):\n• 1차 방어선(W=5, relu): MLP / 1D-CNN / GRU Autoencoder 벤치마크 → MLP 선정.\n  • 선정 근거: Recall 차이 0.004로 유의미하지 않음, CNN 대비 속도 40% 우위(5.66s vs 9.32s).\n  • 튜닝: 임계값 완화(p95→p90)로 BruteForce Recall 2배 향상(0.066→0.128).\n• 2차 방어선(W=20, tanh): LSTM / Bi-LSTM Autoencoder 벤치마크 → Bi-LSTM 선정.\n  • relu→tanh 변경: W=20 긴 시퀀스 기울기 폭발 방지, LSTM 학습 효율 38% 향상.\n  • BASE(u64, p95)가 최적: units 축소/임계값 강화 시 DoS Recall 급락 확인.\n• 1차 MLP(5.66s/epoch) → 2차 Bi-LSTM(120.77s/epoch): 속도 20배 차이가 Cascade 설계의 핵심 근거.\n\n■ 모델·임계값:\n• 1차 최종: TUN2_u64_p90_nodrop.keras, 임계값 0.000150 (p90 percentile MSE).\n• 2차 최종: bilstm_tanh_base.keras, 임계값 0.000907 (p95 percentile MSE).\n• 두 모델 모두 Autoencoder 기반 비지도학습 → 정상 패턴만 학습, MSE 기반 이상 탐지.\n\n■ 앱·시연:\n• Streamlit 2-Tier 실시간 탐지 대시보드.\n• demo_raw_3.csv(6,000개, 연속 추출) 또는 사용자 CSV 업로드.\n• 동기화 슬라이딩 윈도우: 동일 시점 t에서 W5/W20 동시 생성 → 인덱스 일치.\n• 배치 추론(batch_size=256): 1차 MLP 전체 처리 → 의심 샘플만 2차 Bi-LSTM 정밀 검사.\n• 시연 결과: BruteForce 0.0%(구조적 한계) / DoS 64.8% / DDoS 99.6%.\n\n■ 한계·향후 계획:\n• BruteForce 초기 패킷이 정상 로그인과 수학적으로 동일 → Rule-based(Snort/Suricata) 융합 필요.\n• 현재 CSV 파일 기반 시연 → FastAPI 실시간 패킷 스트림 연동 예정.\n• 단일 데이터셋(CICIDS2017) 의존 → 다양한 환경 검증 필요.\n• Java Spring Boot 연동 → 탐지 결과 DB 저장 예정."
-      }
-    ]
-  },
-  {
     "id": "pump-sensor",
     "collaboration": "individual",
     "title": "산업용 펌프 센서 이상 탐지 시스템",
@@ -333,7 +333,7 @@
       {
         "id": "overview",
         "label": "개요",
-        "content": "【요약: Pump Sensor Anomaly Detection】\n\n■ 데이터:\n• Kaggle pump_sensor_data (220,320행, 52개 센서, 2018-04~08)\n• NORMAL 205,836건(93.4%) / RECOVERING 14,477건 / BROKEN 7건(0.003%)\n• 극단적 불균형 → 비지도 학습 선택\n\n■ 설계 결정:\n• 평가 지표: F2 Score(β=2), 미탐(FN) 비용 ≫ 오탐(FP) 비용\n• 전처리: bfill 완전 제거(실시간 미래 참조 차단), ffill → fillna(0)\n• 시간순 분할: Train 55% / Val 15% / Test 30%\n• A/B 실험: VIF(21피처) vs 전체 센서(51피처)\n\n■ 아키텍처:\n• 딥러닝 3종(LSTM-AE, CNN1D-AE, Transformer-AE) + ML 2종(IForest, OCSVM) 비교\n• Optuna 500 trials 자동 튜닝 (TPE + MedianPruner, Val F2 최대화)\n• 챔피언: All-sensors LSTM-AE, Val F2 0.4441 / Test Recall 0.9091\n• 보조: VIF CNN1D-AE, Val F2 0.4112 / Test Recall 0.7222\n\n■ RAG 파이프라인:\n• 피처별 MSE 역산 → Top-3 의심 센서 추출\n• ChromaDB + 장비 정비 규정 문서 검색\n• Gemini 2.5 Flash → 자연어 진단 리포트 생성\n• light_grounding_check로 환각 방지 가드레일(PoC)\n\n■ 실제 구현:\n• Gradio UI: CSV 업로드 → 추론 → Plotly 차트 + KPI + 리포트\n• 체크포인트 프리셋: all(51피처) / vif(21피처) 전환 지원\n\n■ 트러블슈팅 주요 18건:\n• VIF_THRESH 10→50 완화(피처 7개→21개, F1=0 탈출)\n• 시간순 분할 전환(y_test 이상 비율 0% 문제 해결)\n• GPU + AMP + Window Cache: 58시간 → 3시간대(95% 단축)\n• Optuna trial inf 처리: nan_to_num + catch=(ValueError,)"
+        "content": "【요약: Pump Sensor Anomaly Detection】\n\n■ 데이터:\n• Kaggle pump_sensor_data (220,320행, 52개 센서, 2018-04~08)\n• NORMAL 205,836건(93.4%) / RECOVERING 14,477건 / BROKEN 7건(0.003%)\n• 극단적 불균형 → 비지도 학습 선택\n\n■ 설계 결정:\n• 평가 지표: F2 Score(β=2), 미탐(FN) 비용 ≫ 오탐(FP) 비용\n• 전처리: bfill 완전 제거(실시간 미래 참조 차단), ffill → fillna(0)\n• 시간순 분할: Train 55% / Val 15% / Test 30%\n• A/B 실험: VIF(21피처) vs 전체 센서(51피처)\n\n■ 아키텍처:\n• 딥러닝 3종(LSTM-AE, CNN1D-AE, Transformer-AE) + ML 2종(IForest, OCSVM) 비교\n• Optuna 500 trials 자동 튜닝 (TPE + MedianPruner, Val F2 최대화)\n• 챔피언: All-sensors LSTM-AE, Val F2 0.4441 / Test Recall 0.9091\n• 보조: VIF CNN1D-AE, Val F2 0.4112 / Test Recall 0.7222\n\n■ RAG 파이프라인:\n• 피처별 MSE 역산 → Top-3 의심 센서 추출\n• ChromaDB + 장비 정비 규정 문서 검색\n• Gemini 2.5 Flash → 자연어 진단 리포트 생성\n• light_grounding_check로 환각 방지 가드레일(PoC)\n\n■ 실제 구현:\n• Gradio UI: CSV 업로드 → 추론 → Plotly 차트 + KPI + 리포트\n• 체크포인트 프리셋: all(51피처) / vif(21피처) 전환 지원\n\n■ 주요 트러블슈팅:\n• VIF_THRESH 10→50 완화(피처 7개→21개, F1=0 탈출)\n• 시간순 분할 전환(y_test 이상 비율 0% 문제 해결)\n• GPU + AMP + Window Cache: 58시간 → 3시간대(95% 단축)\n• Optuna trial inf 처리: nan_to_num + catch=(ValueError,)"
       }
     ]
   },
